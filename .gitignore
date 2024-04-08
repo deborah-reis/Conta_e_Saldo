@@ -1,68 +1,118 @@
 
-conta_universitaria: 1
-limite_univ = 1.500
-saque_por_dia_univ = 250
-saldo_univ = 500
+conta_salario: 1
+limite_salario = 150
+saldo_salario = 650
 
 conta_poupanca = 2
-limite_pop = 2.000
-saque_por_dia_pop = 500
-saldo_pop = 100
+limite_pop = 500
+saldo_pop = 1000
 
- 
-entrada = int(input("Informe seu tipo de conta: \n [1] Conta Universitária \n [2] Conta Poupança \n [0] Sair \n"))
+extrato = '''=== EXTRATO ATUAL DO SALÁRIO ===
+'''
 
-if entrada == 0:
-    print("Saindo do programa...")
-    continuar_progama = False
-    
+extrato_pop = '''=== EXTRATO ATUAL DA POUPANÇA ==='''
+menu =  '''
+Informe seu tipo de conta:
+[1] Conta Salário
+[2] Conta Poupança
+[0] Sair
+ '''
+salario = '''
+Você escolheu a Conta Salário!
+Selecione uma das opções seguintes:
 
-elif entrada == 1:
-    while True:
-        numero = int(input("Deseja \n [3] Depositar \n [4] Sacar \n [5] Extrato \n [0] Voltar \n"))
-   
-        if numero == 0:
-                print("Voltando para a seleção de conta...")
-                break
+[3] Depositar [4] Sacar [5] Extrato [0] Voltar \n'''
+poupanca = '''
+Você escolheu a Conta Poupança!
+Selecione uma das opções seguintes:
 
-        if numero == 3:
-           valor_dep = (input("Quanto deseja depositar: "))
-           float(input(f"{valor_dep} sendo depositado na sua Conta Universitária! Aguarde!\n"))
-    
-        elif numero == 4:
-           valor_sac = float(input("Quanto deseja sacar: "))
-           if valor_sac > saldo_univ:
-                print("Saldo insuficiente, tente novamente.. \n")
-           else:
-                print(f"Sacando {valor_sac}, retire na boca do caixa. \n")
+[3] Depositar [4] Sacar [5] Extrato [0] Voltar \n'''
 
-        elif numero == 5:
-            print(f"O seu extrato é de {saldo_univ}")
+invalido = '''
+Opção inválida. Por favor, selecione 1 para Conta Salário,
+2 para Conta Poupança ou 0 para Sair.'''
 
-        else:
-            print("Voltando pro Menu Principal")
 
-   
-elif entrada == 2:
-    while True:
-        numero = int(input("Deseja \n [3] Depositar \n [4] Sacar \n [5] Extrato \n [0] Voltar \n"))
 
-        if numero == 3:
-            valor_dep = (input("Quanto deseja depositar: "))
-            float(input(f"{valor_dep} sendo depositado na sua Conta Poupança! Aguarde!\n"))
-    
-        elif numero == 4:
-            valor_sac = float(input("Quanto deseja sacar: "))
-            if valor_sac > saldo_pop:
-             print("Saldo insuficiente, tente novamente.. \n")
+while True:
+    entrada = int(input(menu))
+
+
+    if entrada == 1:
+        opcao = int(input(salario))
+
+        if opcao == 3:
+            valor_dep = float(input("Digite o valor a ser depositado: "))
+            if valor_dep > 0:
+                saldo_salario += valor_dep
+                extrato += (f'Depósito: R$ {valor_dep:.2f}\n')
+                print(f"O {valor_dep:.2f} está sendo depositado!")
             else:
-                print(f"Sacando {valor_sac}, retire na boca do caixa. \n")
+                print("Operação falhou! Tente novamente...")
 
-        elif numero == 5:
-            print(f"O seu extrato é de {saldo_pop}")
+        elif opcao == 4:
+            valor_sac = float(input("Digite o valor que deseja sacar: "))
 
+            excedeu_saldo = valor_sac > saldo_salario
+            excedeu_limite = valor_sac > limite_salario
+            
+            if excedeu_saldo:
+                print("Opss! Você não tem saldo suficiente.")
+            elif excedeu_limite:
+                print("Opss! O valor de saque excede o limite.")
+            elif valor_sac > 0:
+                print(f"R$ {valor_sac:.2f} sendo sacado! Retire na boca do caixa.")
+                saldo_salario -= valor_sac
+                extrato += (f'Saque: R$ {valor_sac:.2f}\n')
+        
+        elif opcao == 5:
+            print(extrato)
+            print("Não foram realizadas movimentações." if not extrato else extrato)
+            print(f"\n Saldo: R$ {saldo_salario:.2f}")
+            print("================")
+
+    elif entrada == 2:
+        opcao = int(input(poupanca))
+
+        if opcao == 3:
+            valor_dep = float(input("Digite o valor a ser depositado: "))
+            if valor_dep > 0:
+                saldo_pop += valor_dep
+                extrato_pop += (f'Depósito: R$ {valor_dep:.2f}\n')
+                print(f"{valor_dep:.2f} sendo depositado!")
+            else:
+                print("Operação falhou! Tente novamente...")
+
+        elif opcao == 4:
+            valor_sac = float(input("Digite o valor que deseja sacar: "))
+
+            excedeu_saldo = valor_sac > saldo_pop
+            excedeu_limite = valor_sac > limite_pop
+            
+            if excedeu_saldo:
+                print("Opss! Você não tem saldo suficiente.")
+            elif excedeu_limite:
+                print("Opss! O valor de saque excede o limite.")
+            elif valor_sac > 0:
+                print(f"R$ {valor_sac:.2f} sendo sacado! Retire na boca do caixa.")
+                saldo_pop -= valor_sac
+                extrato_pop += (f'\n Saque: R$ {valor_sac:.2f}\n')
+        
+        elif opcao == 5:
+            print(extrato)
+            print("Não foram realizadas movimentações." if not extrato_pop else extrato_pop)
+            print(f"\n Saldo: R$ {saldo_pop:.2f}")
+            print("================")
+
+
+        elif entrada == 0:
+         print("Saindo do programa...")
+         continuar_progama = False
         else:
             print("Voltando pro Menu Principal")
-
-else:
- print("Opção inválida. Por favor, selecione 1 para Conta Universitária, 2 para Conta Poupança ou 0 para Sair.")
+    
+    elif entrada == 0:
+        print("Saindo do programa...")
+        break
+    else:
+     print(invalido)
